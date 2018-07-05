@@ -5,7 +5,6 @@
 #set default page
 clear
 echo 1 > thispage.tmp
-
 getpage() {
   echo "Getting Page $(cat thispage.tmp)"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp) -O page-$(cat thispage.tmp).tmp
@@ -59,6 +58,7 @@ selectitem() {
     echo "Listing link"
     rm get.tmp
     cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep tetew.info > njir.tmp
+    rm download.tmp
   fi
 }
 
@@ -115,14 +115,14 @@ selectuser() {
 }
 
 getlink() {
-  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat select.tmp) -O download.tmp
-
-  cat download.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* > select.tmp
-  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat select.tmp | base64 -d) -O download.tmp
+  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat select.tmp) -O tetew.tmp
+  cat tetew.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o "[^\"]*" | grep -o aH.* > base.tmp
+  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat base.tmp | base64 -d) -O greget.tmp
   clear
   banner
-  res= echo "here is your download link" $(cat download.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
+  res= echo "here is your download link" $(cat greget.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
   printf "$res\n"
+  #rm select.tmp
 }
 
 again() {
