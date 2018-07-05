@@ -70,6 +70,91 @@ checklist() {
    listnol
   fi
 }
+getquality1() {
+  read -p "Select Quality : " quality
+   if [ $quality == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   elif [ $quality == "2" ]
+     then
+     echo $(expr $(cat select.tmp) + 6) > select.tmp
+   elif [ $quality == "3" ]
+     then
+     echo $(expr $(cat select.tmp) + 12) > select.tmp
+   else
+     echo $(expr $(cat select.tmp) + 18) > select.tmp
+   fi
+}
+getquality2() {
+  read -p "Select Quality : " quality
+   if [ $quality == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   elif [ $quality == "2" ]
+     then
+     echo $(expr $(cat select.tmp) + 7) > select.tmp
+   elif [ $quality == "3" ]
+     then
+     echo $(expr $(cat select.tmp) + 14) > select.tmp
+   else
+     echo $(expr $(cat select.tmp) + 21) > select.tmp
+   fi
+}
+gethost1() {
+  read -p "Select Hosting : " host
+   if [ $host == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   elif [ $host == "2" ]
+     then
+     echo $(expr $(cat select.tmp) + 1) > select.tmp
+   elif [ $host == "3" ]
+     then
+     echo $(expr $(cat select.tmp) + 2) > select.tmp
+   elif [ $host == "4" ]
+     then
+     echo $(expr $(cat select.tmp) + 3) > select.tmp
+   elif [ $host == "5" ]
+     then
+     echo $(expr $(cat select.tmp) + 4) > select.tmp
+   else
+     echo $(expr $(cat select.tmp) + 5) > select.tmp
+   fi
+}
+gethost2() {
+  read -p "Select Hosting : " host
+   if [ $host == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   elif [ $host == "2" ]
+     then
+     echo $(expr $(cat select.tmp) + 1) > select.tmp
+   elif [ $host == "3" ]
+     then
+     echo $(expr $(cat select.tmp) + 2) > select.tmp
+   elif [ $host == "4" ]
+     then
+     echo $(expr $(cat select.tmp) + 3) > select.tmp
+   elif [ $host == "5" ]
+     then
+     echo $(expr $(cat select.tmp) + 4) > select.tmp
+   elif [ $host == "6" ]
+     then
+     echo $(expr $(cat select.tmp) + 5) > select.tmp
+   else
+     echo $(expr $(cat select.tmp) + 6) > select.tmp
+   fi    
+}
+
+getqualitygp() {
+  read -p "Select Quality : " quality
+   if [ $quality == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   else [ $quality == "2" ]
+     echo $(expr $(cat select.tmp) + 6) > select.tmp
+   fi
+}
 
 listlapan() {
   start=1
@@ -79,112 +164,22 @@ listlapan() {
      then
      echo $(expr $start + 0) > select.tmp
      echo "[1] 360p [2] 480p [3]720p [4]1080p"
-        read -p "Select Quality : " quality
-         if [ $quality == "1" ]
-           then
-           echo $(expr $(cat select.tmp) + 0) > select.tmp
-         elif [ $quality == "2" ]
-           then
-           echo $(expr $(cat select.tmp) + 7) > select.tmp
-         elif [ $quality == "3" ]
-           then
-           echo $(expr $(cat select.tmp) + 14) > select.tmp
-         else
-           echo $(expr $(cat select.tmp) + 21) > select.tmp
-         fi
-        echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-        read -p "Select Hosting : " host
-         if [ $host == "1" ]
-           then
-           echo $(expr $(cat select.tmp) + 0) > select.tmp
-         elif [ $host == "2" ]
-           then
-           echo $(expr $(cat select.tmp) + 1) > select.tmp
-         elif [ $host == "3" ]
-           then
-           echo $(expr $(cat select.tmp) + 2) > select.tmp
-         elif [ $host == "4" ]
-           then
-           echo $(expr $(cat select.tmp) + 3) > select.tmp
-         elif [ $host == "5" ]
-           then
-           echo $(expr $(cat select.tmp) + 4) > select.tmp
-         elif [ $host == "6" ]
-           then
-           echo $(expr $(cat select.tmp) + 5) > select.tmp
-         else
-           echo $(expr $(cat select.tmp) + 6) > select.tmp
-         fi    
+     getquality2
+     echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
+     gethost2
     elif [ $file == "2" ]
      then
      echo $(expr $start + 28) > select.tmp
      echo "[1] 360p [2] 480p [3]MP4HD [4]FullHD"
-        read -p "Select Quality : " quality
-         if [ $quality == "1" ]
-           then
-           echo $(expr $(cat select.tmp) + 0) > select.tmp
-         elif [ $quality == "2" ]
-           then
-           echo $(expr $(cat select.tmp) + 7) > select.tmp
-         elif [ $quality == "3" ]
-           then
-           echo $(expr $(cat select.tmp) + 14) > select.tmp
-         else
-           echo $(expr $(cat select.tmp) + 21) > select.tmp
-         fi
-        echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-        read -p "Select Hosting : " host
-         if [ $host == "1" ]
-           then
-           echo $(expr $(cat select.tmp) + 0) > select.tmp
-         elif [ $host == "2" ]
-           then
-           echo $(expr $(cat select.tmp) + 1) > select.tmp
-         elif [ $host == "3" ]
-           then
-           echo $(expr $(cat select.tmp) + 2) > select.tmp
-         elif [ $host == "4" ]
-           then
-           echo $(expr $(cat select.tmp) + 3) > select.tmp
-         elif [ $host == "5" ]
-           then
-           echo $(expr $(cat select.tmp) + 4) > select.tmp
-         elif [ $host == "6" ]
-           then
-           echo $(expr $(cat select.tmp) + 5) > select.tmp
-         else
-           echo $(expr $(cat select.tmp) + 6) > select.tmp
-         fi
+     getquality
+     echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
+     gethost1
     else
      echo $(expr $start + 56) > select.tmp
      echo "[1]MP4 [2]3GP"
-       read -p "Select Quality : " quality
-        if [ $quality == "1" ]
-          then
-          echo $(expr $(cat select.tmp) + 0) > select.tmp
-        else [ $quality == "2" ]
-          echo $(expr $(cat select.tmp) + 6) > select.tmp
-        fi
-        echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-        read -p "Select Hosting : " host
-          if [ $host == "1" ]
-            then
-            echo $(expr $(cat select.tmp) + 0) > select.tmp
-          elif [ $host == "2" ]
-            then
-            echo $(expr $(cat select.tmp) + 1) > select.tmp
-          elif [ $host == "3" ]
-            then
-            echo $(expr $(cat select.tmp) + 2) > select.tmp
-          elif [ $host == "4" ]
-            then
-            echo $(expr $(cat select.tmp) + 3) > select.tmp
-          elif [ $host == "5" ]
-            then
-            echo $(expr $(cat select.tmp) + 4) > select.tmp
-          else
-            echo $(expr $(cat select.tmp) + 5) > select.tmp
-      fi
+     getqualitygp
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1
     fi
  awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
 }
@@ -195,128 +190,25 @@ listnol() {
   read -p "Select File Type : " file
     if [ $file == "1" ]
      then
-     echo $(expr $start + 0) > select.tmp
-     
-      echo "[1] 360p [2] 480p [3]720p [4]1080p"
-    read -p "Select Quality : " quality
-    if [ $quality == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $quality == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 6) > select.tmp
-    elif [ $quality == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 12) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 18) > select.tmp
-    fi
-     
+     echo $(expr $start + 0) > select.tmp  
+     echo "[1] 360p [2] 480p [3]720p [4]1080p"
+     getquality1   
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-    read -p "Select Hosting : " host
-    if [ $host == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $host == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 1) > select.tmp
-    elif [ $host == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 2) > select.tmp
-    elif [ $host == "4" ]
-     then
-     echo $(expr $(cat select.tmp) + 3) > select.tmp
-    elif [ $host == "5" ]
-     then
-     echo $(expr $(cat select.tmp) + 4) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 5) > select.tmp
-    fi
-     
+     gethost1 
     elif [ $file == "2" ]
      then
      echo $(expr $start + 24) > select.tmp
-     
      echo "[1] 360p [2] 480p [3]MP4HD [4]FullHD"
-    read -p "Select Quality : " quality
-    if [ $quality == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $quality == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 6) > select.tmp
-    elif [ $quality == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 12) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 18) > select.tmp
-    fi
-     
+     getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-    read -p "Select Hosting : " host
-    if [ $host == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $host == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 1) > select.tmp
-    elif [ $host == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 2) > select.tmp
-    elif [ $host == "4" ]
-     then
-     echo $(expr $(cat select.tmp) + 3) > select.tmp
-    elif [ $host == "5" ]
-     then
-     echo $(expr $(cat select.tmp) + 4) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 5) > select.tmp
-    fi
-     
+     gethost1 
     else
      echo $(expr $start + 48) > select.tmp
-     
      echo "[1]MP4 [2]3GP"
-    read -p "Select Quality : " quality
-    if [ $quality == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $quality == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 6) > select.tmp
-    elif [ $quality == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 12) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 18) > select.tmp
-    fi
-     
+     getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-    read -p "Select Hosting : " host
-    if [ $host == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-    elif [ $host == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 1) > select.tmp
-    elif [ $host == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 2) > select.tmp
-    elif [ $host == "4" ]
-     then
-     echo $(expr $(cat select.tmp) + 3) > select.tmp
-    elif [ $host == "5" ]
-     then
-     echo $(expr $(cat select.tmp) + 4) > select.tmp
-    else
-     echo $(expr $(cat select.tmp) + 5) > select.tmp
+     gethost1     
     fi
-     
-    fi
-
- 
-
-  
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
 }
 
