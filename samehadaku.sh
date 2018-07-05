@@ -1,7 +1,7 @@
 #!/bin/bash
 #Samehadaku Link Grabber
 #Code by: laztname
-
+#Remove a credit doesn't make you look like coder --Nayeon xD
 #set default page
 clear
 echo 1 > thispage.tmp
