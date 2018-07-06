@@ -5,6 +5,20 @@
 #set default page
 clear
 echo 1 > thispage.tmp
+
+getsearch() {
+  trap "ctrlc" 2
+  if [ ! -e search.tmp ]
+   then
+   read -p "Your Keyword : " cari
+  else
+   printf ""
+  fi
+  echo $cari > search.tmp
+  echo "Searching for $cari"
+  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp)/?s=$(cat search.tmp) -O page-$(cat thispage.tmp).tmp
+}
+
 getpage() {
   trap "ctrlc" 2
   echo "Getting Page $(cat thispage.tmp)"
@@ -40,7 +54,12 @@ selectitem() {
    banner
    echo $(expr $(cat thispage.tmp) + 1) > thispage.tmp
    rm listjudul.tmp listurl.tmp
-   getpage
+   if [ ! -e search.tmp ]
+    then
+    getpage
+   else
+    getsearch
+   fi
    gettitlelink
    separate
    listtitle
@@ -251,6 +270,22 @@ again() {
   fi
 }
 
+utama() {
+  clear
+  banner
+  read -p "[1]List Index  [2]Search with keywords :" utama
+  if [ $utama == "1" ]
+   then
+   getpage
+  elif [ $utama == "2" ]
+   then
+   getsearch
+  else
+   echo "wrong input. exiting"
+   tmp
+  fi
+}
+
 ctrlc() {
   clear
   banner
@@ -278,8 +313,7 @@ created with love by laztname\n
 sleep 0.5
 }
 
-banner
-getpage
+utama
 gettitlelink
 separate
 listtitle
