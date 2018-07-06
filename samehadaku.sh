@@ -81,7 +81,7 @@ selectitem() {
     echo "Getting Selected Item"
     wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat get.tmp) -O download.tmp
     rm get.tmp
-    cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep tetew.info > njir.tmp
+    cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep -e tetew -e siotong > njir.tmp
     #rm download.tmp
   fi
 }
