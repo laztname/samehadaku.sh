@@ -6,6 +6,7 @@
 clear
 echo 1 > thispage.tmp
 getpage() {
+  trap "ctrlc" 2
   echo "Getting Page $(cat thispage.tmp)"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp) -O page-$(cat thispage.tmp).tmp
 }
@@ -15,18 +16,23 @@ gettitlelink() {
 }
 
 separate() {
+  trap "ctrlc" 2
+  echo "Separating"
   cat list.tmp | grep -e '[A-Z]' >> listjudul.tmp
   cat list.tmp | grep -e '^[a-z]' >> listurl.tmp
   rm list.tmp
+  sleep 0.5
 }
 
 listtitle() {
+  trap "ctrlc" 2
   clear
   banner
   cat listjudul.tmp | grep -n "ndonesia"
 }
 
 selectitem() {
+  trap "ctrlc" 2
   read -p "Select number or [n]ext page [p]revious page : " judul
   if [ $judul == "n" ]
    then 
@@ -55,7 +61,6 @@ selectitem() {
     awk -v i=$judul 'NR==i {print $1}' listurl.tmp >> get.tmp
     echo "Getting Selected Item"
     wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat get.tmp) -O download.tmp
-    echo "Listing link"
     rm get.tmp
     cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep tetew.info > njir.tmp
     #rm download.tmp
@@ -63,6 +68,7 @@ selectitem() {
 }
 
 checklist() {
+  trap "ctrlc" 2
   if [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
    then
    listlapan
@@ -71,6 +77,7 @@ checklist() {
   fi
 }
 getquality1() {
+  trap "ctrlc" 2
   read -p "Select Quality : " quality
    if [ $quality == "1" ]
      then
@@ -86,6 +93,7 @@ getquality1() {
    fi
 }
 getquality2() {
+  trap "ctrlc" 2
   read -p "Select Quality : " quality
    if [ $quality == "1" ]
      then
@@ -101,6 +109,7 @@ getquality2() {
    fi
 }
 gethost1() {
+  trap "ctrlc" 2
   read -p "Select Hosting : " host
    if [ $host == "1" ]
      then
@@ -122,6 +131,7 @@ gethost1() {
    fi
 }
 gethost2() {
+  trap "ctrlc" 2
   read -p "Select Hosting : " host
    if [ $host == "1" ]
      then
@@ -147,6 +157,7 @@ gethost2() {
 }
 
 getqualitygp() {
+  trap "ctrlc" 2
   read -p "Select Quality : " quality
    if [ $quality == "1" ]
      then
@@ -157,20 +168,21 @@ getqualitygp() {
 }
 
 listlapan() {
+  trap "ctrlc" 2
   start=1
-  echo "[1] MKV [2] MP4 [3]3GP"
+  echo "[1]MKV [2]MP4 [3]3GP"
   read -p "Select File Type : " file
     if [ $file == "1" ]
      then
      echo $(expr $start + 0) > select.tmp
-     echo "[1] 360p [2] 480p [3]720p [4]1080p"
+     echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality2
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
      gethost2
     elif [ $file == "2" ]
      then
      echo $(expr $start + 28) > select.tmp
-     echo "[1] 360p [2] 480p [3]MP4HD [4]FullHD"
+     echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
      getquality
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
      gethost1
@@ -185,20 +197,21 @@ listlapan() {
 }
 
 listnol() {
+  trap "ctrlc" 2
   start=1
-  echo "[1] MKV [2] MP4 [3]3GP"
+  echo "[1]MKV [2]MP4 [3]3GP"
   read -p "Select File Type : " file
     if [ $file == "1" ]
      then
      echo $(expr $start + 0) > select.tmp  
-     echo "[1] 360p [2] 480p [3]720p [4]1080p"
+     echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality1   
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
      gethost1 
     elif [ $file == "2" ]
      then
      echo $(expr $start + 24) > select.tmp
-     echo "[1] 360p [2] 480p [3]MP4HD [4]FullHD"
+     echo "[1] 360p [2]480p [3]MP4HD [4]FullHD"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
      gethost1 
@@ -213,18 +226,21 @@ listnol() {
 }
 
 getlink() {
+  trap "ctrlc" 2
+  clear
+  banner
+  echo "Generating your link"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat select.tmp) -O tetew.tmp
   cat tetew.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o "[^\"]*" | grep -o aH.* > base.tmp
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat base.tmp | base64 -d) -O greget.tmp
-  clear
-  banner
   res= echo "here is your download link" $(cat greget.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
   printf "$res\n"
   #rm select.tmp
 }
 
 again() {
-  read -p "[c]hange hosting [e]xit : " again
+  trap "ctrlc" 2
+  read -p "[c]hange hosting or filetype | [e]xit : " again
   if [ $again == "c" ]
    then
    checklist
@@ -233,6 +249,15 @@ again() {
   else
    tmp
   fi
+}
+
+ctrlc() {
+  clear
+  banner
+  echo "Ctrl-C caught...performing clean up"
+  sleep 1
+  tmp
+  exit 2
 }
 
 tmp() {
