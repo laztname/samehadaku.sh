@@ -273,14 +273,25 @@ getlink() {
 
 again() {
   trap "ctrlc" 2
-  read -p "[c]hange hosting or filetype | [e]xit : " again
+  read -p "[c]hange hosting or filetype or [e]xit or [m]ain menu : " again
   if [ $again == "c" ]
    then
    checklist
    getlink
    again
+  elif [ $again == "e" ]
+   then
+   tmp
+   exit 2
+  elif [ $again == "m" ]
+   then
+   rm *.tmp
+   echo "1" > thispage.tmp
+   utama
   else
    tmp
+   echo "Invalid input"
+   echo "Exiting"
    exit 2
   fi
 }
