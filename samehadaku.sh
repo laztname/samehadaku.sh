@@ -17,16 +17,19 @@ getsearch() {
   echo $cari > search.tmp
   echo "Searching for $cari"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp)/?s=$(cat search.tmp) -O page-$(cat thispage.tmp).tmp
+  gettitlelink
 }
 
 getpage() {
   trap "ctrlc" 2
-  echo "Getting Page $(cat thispage.tmp)"
+  echo "Get Page $(cat thispage.tmp)"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp) -O page-$(cat thispage.tmp).tmp
+  gettitlelink
 }
 
 gettitlelink() {
   cat page-$(cat thispage.tmp).tmp | grep -E "<h3 class=\"post-title\">.*</h3>" | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep -vwE "post-title" >> list.tmp
+  separate
 }
 
 separate() {
@@ -36,53 +39,54 @@ separate() {
   cat list.tmp | grep -e '^[a-z]' >> listurl.tmp
   rm list.tmp
   sleep 0.5
+  listtitle
 }
 
 listtitle() {
   trap "ctrlc" 2
   clear
   banner
-  cat listjudul.tmp | grep -n "ndonesia"
+  cat listjudul.tmp | grep -n "Subtitle"
+  selectitem
 }
 
 selectitem() {
   trap "ctrlc" 2
-  read -p "Select number or [n]ext page [p]revious page : " judul
+  read -p "Select number or [n]ext page [p]revious page [b]ack to main menu : " judul
   if [ $judul == "n" ]
    then 
    clear
    banner
    echo $(expr $(cat thispage.tmp) + 1) > thispage.tmp
    rm listjudul.tmp listurl.tmp
-   if [ ! -e search.tmp ]
-    then
-    getpage
-   else
-    getsearch
-   fi
-   gettitlelink
-   separate
-   listtitle
-   selectitem
+    if [ ! -e search.tmp ]
+     then
+     getpage
+    else
+     getsearch
+    fi
+     gettitlelink
   elif [ $judul == "p" ]
-   then
-   clear
-   banner
-   echo $(expr $(cat thispage.tmp) - 1) > thispage.tmp
-   rm listjudul.tmp listurl.tmp
-   gettitlelink
-   separate
-   listtitle
-   selectitem
+    then
+    clear
+    banner
+    echo $(expr $(cat thispage.tmp) - 1) > thispage.tmp
+    rm listjudul.tmp listurl.tmp
+    gettitlelink
+  elif [ $judul == "b" ]
+    then
+    rm listurl.tmp listjudul.tmp search.tmp page-*.tmp
+    utama
   else
     clear
     banner
     awk -v i=$judul 'NR==i {print $1}' listurl.tmp >> get.tmp
-    echo "Getting Selected Item"
+    echo "Get Selected Item"
     wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat get.tmp) -O download.tmp
     rm get.tmp
-    cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep -e tetew -e siotong > njir.tmp
-    #rm download.tmp
+    cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep -e tetew -e siotong -e coeg > njir.tmp
+    rm download.tmp
+    checklist
   fi
 }
 
@@ -91,8 +95,15 @@ checklist() {
   if [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
    then
    listlapan
-  else
+  elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 60 ]
+   then
    listnol
+  else
+   tmp
+   echo "Incomplete link list from samehadaku.tv"
+   echo "It seems you should get a link manually"
+   echo "I'm Sorry... Exiting......"
+   exit 2
   fi
 }
 getquality1() {
@@ -127,6 +138,18 @@ getquality2() {
      echo $(expr $(cat select.tmp) + 21) > select.tmp
    fi
 }
+
+getqualitygp() {
+  trap "ctrlc" 2
+  read -p "Select Quality : " quality
+   if [ $quality == "1" ]
+     then
+     echo $(expr $(cat select.tmp) + 0) > select.tmp
+   else [ $quality == "2" ]
+     echo $(expr $(cat select.tmp) + 6) > select.tmp
+   fi
+}
+
 gethost1() {
   trap "ctrlc" 2
   read -p "Select Hosting : " host
@@ -172,17 +195,6 @@ gethost2() {
      echo $(expr $(cat select.tmp) + 5) > select.tmp
    else
      echo $(expr $(cat select.tmp) + 6) > select.tmp
-   fi    
-}
-
-getqualitygp() {
-  trap "ctrlc" 2
-  read -p "Select Quality : " quality
-   if [ $quality == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-   else [ $quality == "2" ]
-     echo $(expr $(cat select.tmp) + 6) > select.tmp
    fi
 }
 
@@ -212,7 +224,8 @@ listlapan() {
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
      gethost1
     fi
- awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
+  awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
+  getlink
 }
 
 listnol() {
@@ -242,6 +255,7 @@ listnol() {
      gethost1     
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
+  getlink
 }
 
 getlink() {
@@ -254,7 +268,7 @@ getlink() {
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat base.tmp | base64 -d) -O greget.tmp
   res= echo "here is your download link" $(cat greget.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
   printf "$res\n"
-  #rm select.tmp
+  again
 }
 
 again() {
@@ -267,13 +281,16 @@ again() {
    again
   else
    tmp
+   exit 2
   fi
 }
 
 utama() {
+  trap "ctrlc" 2
   clear
   banner
-  read -p "[1]List Index  [2]Search with keywords :" utama
+  echo "[1]List Index  [2]Search with keywords"
+  read -p "Select 1 or 2 : " utama
   if [ $utama == "1" ]
    then
    getpage
@@ -283,6 +300,7 @@ utama() {
   else
    echo "wrong input. exiting"
    tmp
+   exit 2
   fi
 }
 
@@ -290,7 +308,7 @@ ctrlc() {
   clear
   banner
   echo "Ctrl-C caught...performing clean up"
-  sleep 1
+  sleep 0.5
   tmp
   exit 2
 }
@@ -314,10 +332,4 @@ sleep 0.5
 }
 
 utama
-gettitlelink
-separate
-listtitle
-selectitem
-checklist
 getlink
-again
