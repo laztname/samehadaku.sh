@@ -286,7 +286,7 @@ listtuju() {
     elif [ $file == "3" ]
      then
      echo $(expr $start + 48) > select.tmp
-     echo "[1]480p [3]720p [4]1080p"
+     echo "[1]480p [2]720p [3]1080p"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
      gethost1
