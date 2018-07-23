@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Samehadaku Link Grabber
-#Code by: laztname
+#Code by: @laztname <- find me on telegram :3
 #Remove a credit doesn't make you look like coder --Nayeon xD
-#set default page
+
 clear
 echo 1 > thispage.tmp
 
@@ -92,7 +92,10 @@ selectitem() {
 
 checklist() {
   trap "ctrlc" 2
-  if [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
+  if [ $(wc -l njir.tmp | awk '{ print $1 }') == 78 ]
+   then
+   listtuju
+  elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
    then
    listlapan
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 60 ]
@@ -258,6 +261,43 @@ listnol() {
   getlink
 }
 
+listtuju() {
+  trap "ctrlc" 2
+  start=1
+  echo "[1]MKV [2]MP4 [3]x265 [4]3GP"
+  read -p "Select File Type : " file
+    if [ $file == "1" ]
+     then
+     echo $(expr $start + 0) > select.tmp  
+     echo "[1]360p [2]480p [3]720p [4]1080p"
+     getquality1   
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1 
+    elif [ $file == "2" ]
+     then
+     echo $(expr $start + 24) > select.tmp
+     echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
+     getquality1
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1
+    elif [ $file == "3" ]
+     then
+     echo $(expr $start + 48) > select.tmp
+     echo "[1]480p [3]720p [4]1080p"
+     getquality1
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1
+    else
+     echo $(expr $start + 66) > select.tmp
+     echo "[1]MP4 [2]3GP"
+     getquality1
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1     
+    fi
+  awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
+  getlink
+}
+
 getlink() {
   trap "ctrlc" 2
   clear
@@ -343,4 +383,3 @@ sleep 0.5
 }
 
 utama
-getlink
