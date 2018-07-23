@@ -46,7 +46,7 @@ listtitle() {
   trap "ctrlc" 2
   clear
   banner
-  cat listjudul.tmp | grep -n "Subtitle"
+  cat listjudul.tmp | grep -n "Episode"
   selectitem
 }
 
@@ -92,7 +92,10 @@ selectitem() {
 
 checklist() {
   trap "ctrlc" 2
-  if [ $(wc -l njir.tmp | awk '{ print $1 }') == 78 ]
+  if [ $(wc -l njir.tmp | awk '{ print $1 }') == 86 ]
+   then
+   listpanam
+  elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 78 ]
    then
    listtuju
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
@@ -222,7 +225,7 @@ listlapan() {
      echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
      getquality1
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-     gethost1
+     gethost2
     else
      echo $(expr $start + 56) > select.tmp
      echo "[1]MP4 [2]3GP"
@@ -296,6 +299,43 @@ listtuju() {
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
      gethost1     
+    fi
+  awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
+  getlink
+}
+
+listpanam() {
+  trap "ctrlc" 2
+  start=1
+  echo "[1]MKV [2]MP4 [3]x265 [4]3GP"
+  read -p "Select File Type : " file
+    if [ $file == "1" ]
+     then
+     echo $(expr $start + 0) > select.tmp
+     echo "[1]360p [2]480p [3]720p [4]1080p"
+     getquality2
+     echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
+     gethost2
+    elif [ $file == "2" ]
+     then
+     echo $(expr $start + 28) > select.tmp
+     echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
+     getquality1
+     echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
+     gethost2
+    elif [ $file == "3" ]
+     then
+     echo $(expr $start + 56) > select.tmp
+     echo "[1]480p [2]720p [3]1080p"
+     getquality1
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1
+    else
+     echo $(expr $start + 74) > select.tmp
+     echo "[1]MP4 [2]3GP"
+     getqualitygp
+     echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+     gethost1
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
   getlink
