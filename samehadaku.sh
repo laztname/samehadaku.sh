@@ -109,6 +109,7 @@ checklist() {
    exit 2
   fi
 }
+
 getquality1() {
   trap "ctrlc" 2
   read -p "Select Quality : " quality
@@ -125,6 +126,7 @@ getquality1() {
      echo $(expr $(cat select.tmp) + 18) > select.tmp
    fi
 }
+
 getquality2() {
   trap "ctrlc" 2
   read -p "Select Quality : " quality
@@ -175,6 +177,7 @@ gethost1() {
      echo $(expr $(cat select.tmp) + 5) > select.tmp
    fi
 }
+
 gethost2() {
   trap "ctrlc" 2
   read -p "Select Hosting : " host
@@ -217,7 +220,7 @@ listlapan() {
      then
      echo $(expr $start + 28) > select.tmp
      echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
-     getquality
+     getquality1
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
      gethost1
     else
