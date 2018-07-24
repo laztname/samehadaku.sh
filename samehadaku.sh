@@ -147,41 +147,7 @@ getquality2() {
    fi
 }
 
-getqualitygp() {
-  trap "ctrlc" 2
-  read -p "Select Quality : " quality
-   if [ $quality == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-   else [ $quality == "2" ]
-     echo $(expr $(cat select.tmp) + 6) > select.tmp
-   fi
-}
-
-gethost1() {
-  trap "ctrlc" 2
-  read -p "Select Hosting : " host
-   if [ $host == "1" ]
-     then
-     echo $(expr $(cat select.tmp) + 0) > select.tmp
-   elif [ $host == "2" ]
-     then
-     echo $(expr $(cat select.tmp) + 1) > select.tmp
-   elif [ $host == "3" ]
-     then
-     echo $(expr $(cat select.tmp) + 2) > select.tmp
-   elif [ $host == "4" ]
-     then
-     echo $(expr $(cat select.tmp) + 3) > select.tmp
-   elif [ $host == "5" ]
-     then
-     echo $(expr $(cat select.tmp) + 4) > select.tmp
-   else
-     echo $(expr $(cat select.tmp) + 5) > select.tmp
-   fi
-}
-
-gethost2() {
+gethost() {
   trap "ctrlc" 2
   read -p "Select Hosting : " host
    if [ $host == "1" ]
@@ -218,20 +184,20 @@ listlapan() {
      echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality2
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-     gethost2
+     gethost
     elif [ $file == "2" ]
      then
      echo $(expr $start + 28) > select.tmp
      echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
-     getquality1
+     getquality2
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-     gethost2
+     gethost
     else
      echo $(expr $start + 56) > select.tmp
      echo "[1]MP4 [2]3GP"
-     getqualitygp
+     getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1
+     gethost
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
   getlink
@@ -248,20 +214,20 @@ listnol() {
      echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality1   
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1 
+     gethost 
     elif [ $file == "2" ]
      then
      echo $(expr $start + 24) > select.tmp
      echo "[1] 360p [2]480p [3]MP4HD [4]FullHD"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1 
+     gethost 
     else
      echo $(expr $start + 48) > select.tmp
      echo "[1]MP4 [2]3GP"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1     
+     gethost     
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
   getlink
@@ -278,27 +244,27 @@ listtuju() {
      echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality1   
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1 
+     gethost 
     elif [ $file == "2" ]
      then
      echo $(expr $start + 24) > select.tmp
      echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1
+     gethost
     elif [ $file == "3" ]
      then
      echo $(expr $start + 48) > select.tmp
      echo "[1]480p [2]720p [3]1080p"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1
+     gethost
     else
      echo $(expr $start + 66) > select.tmp
      echo "[1]MP4 [2]3GP"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1     
+     gethost     
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
   getlink
@@ -315,27 +281,27 @@ listpanam() {
      echo "[1]360p [2]480p [3]720p [4]1080p"
      getquality2
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-     gethost2
+     gethost
     elif [ $file == "2" ]
      then
      echo $(expr $start + 28) > select.tmp
      echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
-     getquality1
+     getquality2
      echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"
-     gethost2
+     gethost
     elif [ $file == "3" ]
      then
      echo $(expr $start + 56) > select.tmp
      echo "[1]480p [2]720p [3]1080p"
      getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1
+     gethost
     else
      echo $(expr $start + 74) > select.tmp
      echo "[1]MP4 [2]3GP"
-     getqualitygp
+     getquality1
      echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
-     gethost1
+     gethost
     fi
   awk -v i=$(cat select.tmp) 'NR==i {print $1}' njir.tmp > select.tmp
   getlink
