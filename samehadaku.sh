@@ -7,7 +7,6 @@ clear
 echo 1 > thispage.tmp
 
 getsearch() {
-  trap "ctrlc" 2
   if [ ! -e search.tmp ]
    then
    read -p "Your Keyword : " cari
@@ -21,7 +20,6 @@ getsearch() {
 }
 
 getpage() {
-  trap "ctrlc" 2
   echo "Get Page $(cat thispage.tmp)"
   wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp) -O page-$(cat thispage.tmp).tmp
   gettitlelink
@@ -33,7 +31,6 @@ gettitlelink() {
 }
 
 separate() {
-  trap "ctrlc" 2
   echo "Separating"
   cat list.tmp | grep -e '[A-Z]' >> listjudul.tmp
   cat list.tmp | grep -e '^[a-z]' >> listurl.tmp
@@ -43,7 +40,6 @@ separate() {
 }
 
 listtitle() {
-  trap "ctrlc" 2
   clear
   banner
   cat listjudul.tmp | grep -n "Episode"
@@ -51,7 +47,6 @@ listtitle() {
 }
 
 selectitem() {
-  trap "ctrlc" 2
   read -p "Select number or [n]ext page [p]revious page [b]ack to main menu : " judul
   if [ $judul == "n" ]
    then 
@@ -65,16 +60,16 @@ selectitem() {
     else
      getsearch
     fi
-     gettitlelink
+   gettitlelink
   elif [ $judul == "p" ]
-    then
+   then
     clear
     banner
     echo $(expr $(cat thispage.tmp) - 1) > thispage.tmp
     rm listjudul.tmp listurl.tmp
     gettitlelink
   elif [ $judul == "b" ]
-    then
+   then
     rm listurl.tmp listjudul.tmp search.tmp page-*.tmp
     utama
   else
@@ -91,7 +86,6 @@ selectitem() {
 }
 
 checklist() {
-  trap "ctrlc" 2
   if [ $(wc -l njir.tmp | awk '{ print $1 }') == 86 ]
    then
    listpanam
@@ -114,7 +108,6 @@ checklist() {
 }
 
 getquality1() {
-  trap "ctrlc" 2
   read -p "Select Quality : " quality
    if [ $quality == "1" ]
      then
@@ -131,7 +124,6 @@ getquality1() {
 }
 
 getquality2() {
-  trap "ctrlc" 2
   read -p "Select Quality : " quality
    if [ $quality == "1" ]
      then
@@ -148,7 +140,6 @@ getquality2() {
 }
 
 gethost() {
-  trap "ctrlc" 2
   read -p "Select Hosting : " host
    if [ $host == "1" ]
      then
@@ -174,7 +165,6 @@ gethost() {
 }
 
 listlapan() {
-  trap "ctrlc" 2
   start=1
   echo "[1]MKV [2]MP4 [3]3GP"
   read -p "Select File Type : " file
@@ -204,7 +194,6 @@ listlapan() {
 }
 
 listnol() {
-  trap "ctrlc" 2
   start=1
   echo "[1]MKV [2]MP4 [3]3GP"
   read -p "Select File Type : " file
@@ -234,7 +223,6 @@ listnol() {
 }
 
 listtuju() {
-  trap "ctrlc" 2
   start=1
   echo "[1]MKV [2]MP4 [3]x265 [4]3GP"
   read -p "Select File Type : " file
@@ -271,7 +259,6 @@ listtuju() {
 }
 
 listpanam() {
-  trap "ctrlc" 2
   start=1
   echo "[1]MKV [2]MP4 [3]x265 [4]3GP"
   read -p "Select File Type : " file
@@ -308,7 +295,6 @@ listpanam() {
 }
 
 getlink() {
-  trap "ctrlc" 2
   clear
   banner
   echo "Generating your link"
@@ -321,7 +307,6 @@ getlink() {
 }
 
 again() {
-  trap "ctrlc" 2
   read -p "[c]hange hosting or filetype or [e]xit or [m]ain menu : " again
   if [ $again == "c" ]
    then
@@ -346,7 +331,6 @@ again() {
 }
 
 utama() {
-  trap "ctrlc" 2
   clear
   banner
   echo "[1]List Index  [2]Search with keywords"
@@ -391,4 +375,5 @@ created with love by laztname\n
 sleep 0.5
 }
 
+trap "ctrlc" 2
 utama
