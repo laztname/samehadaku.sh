@@ -4,8 +4,11 @@ bash link graber for samehadaku.tv
 
 ![example](https://raw.githubusercontent.com/laztname/samehadaku.sh/master/view.png)
 
+how to use ?
+
 ```
-git clone https://github.com/laztname/samehadaku.sh.git
+git clone https://github.com/laztname/samehadaku.sh
+cd samehadaku.sh
 chmod +x samehadaku.sh
 ./samehadaku.sh
 ```
