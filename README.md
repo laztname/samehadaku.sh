@@ -2,6 +2,8 @@
 
 bash link graber for samehadaku.tv
 
+![example](https://raw.githubusercontent.com/laztname/samehadaku.sh/master/view.png)
+
 ```
 git clone https://github.com/laztname/samehadaku.sh.git
 chmod +x samehadaku.sh
