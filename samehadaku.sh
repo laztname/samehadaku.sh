@@ -70,6 +70,7 @@ selectitem() {
     gettitlelink
   elif [ $judul == "b" ]
    then
+   	echo 1  > thispage.tmp
     rm listurl.tmp listjudul.tmp search.tmp page-*.tmp
     utama
   else
