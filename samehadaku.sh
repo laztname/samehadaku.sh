@@ -15,7 +15,7 @@ getsearch() {
   fi
   echo $cari > search.tmp
   echo "Searching for $cari"
-  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" https://samehadaku.tv/page/$(cat thispage.tmp)/?s=$(cat search.tmp) -O page-$(cat thispage.tmp).tmp
+  wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" "https://samehadaku.tv/page/$(cat thispage.tmp)/?s=$(cat search.tmp)" -O page-$(cat thispage.tmp).tmp
   gettitlelink
 }
 
