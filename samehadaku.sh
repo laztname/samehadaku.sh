@@ -76,10 +76,9 @@ selectitem() {
   else
     clear
     banner
-    awk -v i=$judul 'NR==i {print $1}' listurl.tmp >> get.tmp
+    awk -v i=$judul 'NR==i {print $1}' listurl.tmp > get.tmp
     echo "Get Selected Item"
     wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat get.tmp) -O download.tmp
-    rm get.tmp
     cat download.tmp | grep -o "\"[^\"]*\"" | grep -o "[^\"]*" | grep -e tetew -e siotong -e coeg > njir.tmp
     rm download.tmp
     checklist
@@ -100,10 +99,11 @@ checklist() {
    then
    listnol
   else
-   tmp
    echo "Incomplete link list from samehadaku.tv"
-   echo "It seems you should get a link manually"
+   echo "It seems you should get a link manually, here is the link"
+   cat get.tmp
    echo "I'm Sorry... Exiting......"
+   tmp
    exit 2
   fi
 }
@@ -359,11 +359,9 @@ ctrlc() {
 }
 
 tmp() {
-  clear
-  banner
-  printf "clearing all temporally files this action will delete *.tmp\n"
+  printf "\nclearing all temporally files this action will delete *.tmp\n"
   rm *.tmp
-  sleep 1
+  sleep 0.3
 }
 
 banner() {
