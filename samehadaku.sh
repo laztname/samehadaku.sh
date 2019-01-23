@@ -98,6 +98,9 @@ checklist() {
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 68 ]
     then
     listnampan
+  elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 66 ]
+    then
+    listnamnam
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 60 ]
     then
     listnampul
@@ -122,7 +125,7 @@ read -p "Select Quality : " quality
   elif [ $quality == "3" ]
     then
     echo $(expr $(cat select.tmp) + 12) > select.tmp
-  elif [ $quality == "3" ]
+  elif [ $quality == "4" ]
     then
     echo $(expr $(cat select.tmp) + 18) > select.tmp
   else
@@ -176,6 +179,35 @@ read -p "Select Hosting : " host
   else
     echo $(expr $(cat select.tmp) + 6) > select.tmp
   fi
+}
+
+listnamnam() {
+# exit
+start=1
+echo "[1]MKV [2]MP4 [3]x265"
+read -p "Select File Type : " file
+  if [ $file == "1" ]
+    then
+    echo $(expr $start + 0) > select.tmp
+    echo "[1]360p [2]480p [3]720p [4]1080p"
+    getquality1
+    echo "[1]UF [2]CU [3]GD [4]ZS [5]RC [6]MU"
+    gethost
+  elif [ $file == "2" ]
+    then
+    echo $(expr $start + 24) > select.tmp
+    echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
+    getquality1
+    echo "[1]UF [2]CU [3]GD [4]ZS [5]RC [6]MU"
+    gethost
+  else
+    echo $(expr $start + 48) > select.tmp
+    echo "[1]480p [2]720p [3]1080p"
+    getquality1
+    echo "[1]UF [2]CU [3]GD [4]ZS [5]RC [6]MU"
+    gethost
+  fi
+getlink
 }
 
 listnampan() {
