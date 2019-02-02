@@ -42,6 +42,7 @@ listtitle
 listtitle() {
 clear
 banner
+echo "You're on page $(cat thispage.tmp)"
 cat listjudul.tmp | grep -n "Episode"
 selectitem
 }
