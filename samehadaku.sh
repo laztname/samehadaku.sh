@@ -32,8 +32,8 @@ separate
 
 separate() {
 echo "Separating"
-cat list.tmp | grep -e '[A-Z]' >> listjudul.tmp
-cat list.tmp | grep -e '^[a-z]' >> listurl.tmp
+cat list.tmp | grep -e '[A-Z]' | grep Sub > listjudul.tmp
+cat list.tmp | grep -e '^[a-z]' | grep sub > listurl.tmp
 rm list.tmp
 sleep 0.5
 listtitle
@@ -55,11 +55,16 @@ read -p "Select number or [n]ext page [p]revious page [b]ack to main menu : " ju
     banner
     echo $(expr $(cat thispage.tmp) + 1) > thispage.tmp
     rm listjudul.tmp listurl.tmp
-      if [ ! -e search.tmp ]
+      if [ -e page-$(cat thispage.tmp).tmp ]
         then
-        getpage
-      else
-        getsearch
+          gettitlelink
+        else
+        if [ ! -e search.tmp ]
+          then
+          getpage
+        else
+          getsearch
+        fi
       fi
     gettitlelink
   elif [ $judul == "p" ]
@@ -110,7 +115,7 @@ checklist() {
     echo "It seems you should get a link manually, here is the link"
     cat get.tmp
     echo "I'm Sorry... Exiting......"
-    tmp
+    # tmp
     exit 2
   fi
 }
