@@ -4,6 +4,9 @@
 #Remove a credit doesn't make you look like coder --Nayeon xD
 
 clear
+echo "Clearing cache (delete *.tmp)"
+sleep 0.5
+rm *.tmp # clearing
 echo 1 > thispage.tmp
 
 getsearch() {
@@ -98,6 +101,10 @@ checklist() {
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 82 ]
     then
     listpandua
+  elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 80 ]
+    then
+    # exit
+    listpanpul
   elif [ $(wc -l njir.tmp | awk '{ print $1 }') == 78 ]
     then
     listtupan
@@ -115,7 +122,7 @@ checklist() {
     echo "It seems you should get a link manually, here is the link"
     cat get.tmp
     echo "I'm Sorry... Exiting......"
-    # tmp
+    tmp
     exit 2
   fi
 }
@@ -187,8 +194,58 @@ read -p "Select Hosting : " host
   fi
 }
 
+listpanpul() {
+start=1
+echo "[1]MKV [2]MP4 [3]x265 [4]3GP"
+read -p "Select File Type : " file
+  if [ $file == "1" ]
+    then
+    echo $(expr $start + 0) > select.tmp
+    echo "[1]360p [2]480p [3]720p [4]1080p"
+    getquality2
+      if [[ $(cat select.tmp) -lt 8 ]]
+        then
+        echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]RC [7]MU"
+      else
+        echo "[1]UF [2]CU [3]GD [4]ZS [5]RC [6]MU"
+      fi
+        if [[ $quality == 3 ]]; then
+          expr $(cat select.tmp) - 1 > select.tmp
+        fi
+    gethost
+  elif [ $file == "2" ]
+    then
+    echo $(expr $start + 25) > select.tmp
+    echo "[1]360p [2]480p [3]MP4HD [4]FullHD"
+    getquality2
+      if [[ $(cat select.tmp) -lt 32 ]]
+        then
+        echo "[1]UF [2]CU [3]ZS1 [4]GD [5]ZS2 [6]SC [7]MU"  
+      else
+        echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+        if [[ $quality == 3 ]]; then
+          expr $(cat select.tmp) - 1 > select.tmp
+        fi
+      fi
+    gethost
+  elif [ $file == "3" ]
+    then
+    echo $(expr $start + 44) > select.tmp
+    echo "[1]480p [2]720p [3]1080p"
+    getquality1
+    echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+    gethost
+  else
+    echo $(expr $start + 32) > select.tmp
+    echo "[1]MP4 [2]3GP"
+    getquality1
+    echo "[1]UF [2]CU [3]GD [4]ZS [5]SC [6]MU"
+    gethost
+  fi
+getlink
+}
+
 listnamnam() {
-# exit
 start=1
 echo "[1]MKV [2]MP4 [3]x265"
 read -p "Select File Type : " file
@@ -459,6 +516,7 @@ exit 2
 
 tmp() {
 printf "\nclearing all temporally files this action will delete *.tmp\n"
+printf "Thank You\n"
 rm *.tmp
 sleep 0.3
 }
