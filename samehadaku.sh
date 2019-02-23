@@ -6,7 +6,7 @@
 clear
 echo "Clearing cache (delete *.tmp)"
 sleep 0.5
-rm *.tmp # clearing
+rm *.tmp
 echo 1 > thispage.tmp
 
 getsearch() {
@@ -458,9 +458,31 @@ echo "Generating your link"
 wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat select.tmp) -O tetew.tmp
 cat tetew.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o "[^\"]*" | grep -o aH.* > base.tmp
 wget -q -nv --header="Accept: text/html" -U "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0" $(cat base.tmp | base64 -d) -O greget.tmp
-res= echo "here is your download link" $(cat greget.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
-printf "$res\n"
+link=$(cat greget.tmp | grep -E "<div class=\"download-link\".*</div>" | grep -o aHR.*= | grep -o "[^\"]*" | grep -o aH.* | base64 -d)
+echo $link > link.tmp
+if grep -q drive.google "link.tmp"; then
+  printf "here is your download link $link\n"
+  read -p "Google Drive detected, wanna download direct here ? [y]es [n]o : " dwnlod
+  if [[ $dwnlod = "y" ]]; then
+    download
+    if grep -q "Quota exceeded" "$FILENAME"; then
+    	rm $FILENAME && \
+    	echo "Google Drive Limited (Quota Exceeded)" && \
+    	echo "You can't download via Google Drive, try another hosting"
+    fi
+  fi
+else
+  printf "here is your download link $link\n" 
+fi
 again
+}
+
+download() {
+FILEID=$(curl -s -I $(cat link.tmp) | grep -oP '(?<=location: ).*')
+FILEID="$(echo $FILEID | sed -n 's#.*\https\:\/\/drive\.google\.com/file/d/\([^.]*\)\/view.*#\1#;p')"; # get file id in url xxxx/d/fileid/view
+FILENAME="$(wget -q -O - "https://drive.google.com/file/d/$FILEID/view" | sed -n -e 's!.*<title>\(.*\)\ \-\ Google\ Drive</title>.*!\1!p')"; # get file name
+wget -q --show-progress --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget -q --show-progress --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate "https://docs.google.com/uc?export=download&id=$FILEID" -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$FILEID" -c -O "$FILENAME" && rm -rf /tmp/cookies.txt;
+echo "file $FILENAME has been downloaded"
 }
 
 again() {
@@ -523,7 +545,7 @@ sleep 0.3
 
 banner() {
 printf "
-_ _.._ _  _ |_  _. _| _.|      _|_  
+ _ _.._ _  _ |_  _. _| _.|      _|_  
 _>(_|| | |(/_| |(_|(_|(_||<|_|o_>| |
 ====================================
 created with love by laztname\n
